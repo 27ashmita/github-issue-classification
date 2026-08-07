@@ -1,0 +1,18 @@
+EDA SUMMARY
+========================================
+
+Dataset Shape: (200, 10)
+
+Class Distribution:
+label
+bug                100
+feature_request    100
+
+Average Issue Length: 179.78 words
+Maximum Issue Length: 3227 words
+Minimum Issue Length: 2 words
+
+Average Issue Length by Class:
+label
+bug                246.47
+feature_request    113.10
