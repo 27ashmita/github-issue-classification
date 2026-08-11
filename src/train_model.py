@@ -4,6 +4,11 @@ from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from sklearn.dummy import DummyClassifier
+from sklearn.metrics import accuracy_score
+
+from sklearn.linear_model import LogisticRegression
+
 
 # ---------------------------------
 # PROJECT PATHS
@@ -78,7 +83,6 @@ X_train_tfidf = tfidf.fit_transform(X_train)
 
 X_test_tfidf = tfidf.transform(X_test)
 
-
 # ---------------------------------
 # CHECK TF-IDF OUTPUT
 # ---------------------------------
@@ -93,3 +97,59 @@ print(X_test_tfidf.shape)
 
 print("\nNumber of TF-IDF features:")
 print(len(tfidf.get_feature_names_out()))
+
+
+# ---------------------------------
+# BASELINE MODEL: MAJORITY CLASSIFIER
+# ---------------------------------
+
+baseline_model = DummyClassifier(
+    strategy="most_frequent"
+)
+
+baseline_model.fit(
+    X_train_tfidf,
+    y_train
+)
+
+baseline_predictions = baseline_model.predict(
+    X_test_tfidf
+)
+
+baseline_accuracy = accuracy_score(
+    y_test,
+    baseline_predictions
+)
+
+print("\nMajority Classifier Baseline")
+
+print("Accuracy:")
+print(f"{baseline_accuracy:.2f}")
+
+
+# ---------------------------------
+# LOGISTIC REGRESSION MODEL
+# ---------------------------------
+
+logistic_model = LogisticRegression(
+    max_iter=1000,
+    random_state=42
+)
+
+logistic_model.fit(
+    X_train_tfidf,
+    y_train
+)
+
+logistic_predictions = logistic_model.predict(
+    X_test_tfidf
+)
+
+logistic_accuracy = accuracy_score(
+    y_test,
+    logistic_predictions
+)
+
+print("\nLogistic Regression")
+print("Accuracy:")
+print(f"{logistic_accuracy:.2f}")
