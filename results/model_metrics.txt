@@ -1,0 +1,36 @@
+MODEL EVALUATION RESULTS
+========================
+
+Total dataset size: 199
+Training samples: 159
+Testing samples: 40
+TF-IDF features: 3649
+
+Majority Classifier Baseline
+----------------------------
+Accuracy: 0.50
+
+Logistic Regression
+-------------------
+Accuracy: 0.70
+Precision: 0.70
+Recall: 0.70
+F1-score: 0.70
+
+Confusion Matrix
+----------------
+[[14  6]
+ [ 6 14]]
+
+Classification Report
+---------------------
+                 precision    recall  f1-score   support
+
+            bug       0.70      0.70      0.70        20
+feature_request       0.70      0.70      0.70        20
+
+       accuracy                           0.70        40
+      macro avg       0.70      0.70      0.70        40
+   weighted avg       0.70      0.70      0.70        40
+
+Number of misclassified issues: 12

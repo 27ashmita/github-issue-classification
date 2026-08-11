@@ -3,7 +3,6 @@ import requests
 import pandas as pd
 from pathlib import Path
 
-
 # GitHub repository information
 OWNER = "microsoft"
 REPO = "vscode"
@@ -33,21 +32,12 @@ def collect_issues(label, class_name):
     while len(collected_issues) < ISSUES_PER_CLASS:
 
         # Parameters sent to the GitHub API
-        params = {
-            "state": "closed",
-            "labels": label,
-            "per_page": 100,
-            "page": page
-        }
+        params = {"state": "closed", "labels": label, "per_page": 100, "page": page}
 
         print(f"Collecting {label} issues - page {page}")
 
         # Send request to GitHub
-        response = requests.get(
-            API_URL,
-            params=params,
-            timeout=30
-        )
+        response = requests.get(API_URL, params=params, timeout=30)
 
         # Check whether the API request worked
         if response.status_code != 200:
@@ -76,9 +66,13 @@ def collect_issues(label, class_name):
                 "title": issue.get("title", ""),
                 "description": issue.get("body") or "",
                 "label": class_name,
+                # Store all GitHub labels attached to the issue
+                "all_labels": ",".join(
+                    label_item["name"] for label_item in issue.get("labels", [])
+                ),
                 "created_at": issue.get("created_at"),
                 "closed_at": issue.get("closed_at"),
-                "url": issue.get("html_url")
+                "url": issue.get("html_url"),
             }
 
             collected_issues.append(issue_data)
@@ -89,10 +83,7 @@ def collect_issues(label, class_name):
 
         page += 1
 
-    print(
-        f"Collected {len(collected_issues)} "
-        f"{class_name} issues"
-    )
+    print(f"Collected {len(collected_issues)} " f"{class_name} issues")
 
     return collected_issues
 
@@ -101,20 +92,14 @@ def collect_issues(label, class_name):
 # Collect bug issues
 # ------------------------------
 
-bug_issues = collect_issues(
-    label="bug",
-    class_name="bug"
-)
+bug_issues = collect_issues(label="bug", class_name="bug")
 
 
 # ------------------------------
 # Collect feature-request issues
 # ------------------------------
 
-feature_issues = collect_issues(
-    label="feature-request",
-    class_name="feature_request"
-)
+feature_issues = collect_issues(label="feature-request", class_name="feature_request")
 
 
 # Combine the two classes
@@ -126,9 +111,7 @@ df = pd.DataFrame(all_issues)
 
 
 # Remove duplicate issue numbers if any exist
-df = df.drop_duplicates(
-    subset="issue_number"
-)
+df = df.drop_duplicates(subset="issue_number")
 
 
 # Save the dataset
@@ -136,10 +119,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 output_file = PROJECT_ROOT / "data" / "raw" / "vscode_closed_issues.csv"
 
-df.to_csv(
-    output_file,
-    index=False
-)
+df.to_csv(output_file, index=False)
 
 
 # Display basic information

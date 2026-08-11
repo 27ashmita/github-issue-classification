@@ -1,0 +1,13 @@
+issue_number,title,label,predicted_label,url
+323335,Keep keyboard focus in the chat input when switching sessions,feature_request,bug,https://github.com/microsoft/vscode/issues/323335
+328054,"Show ""Listening..."" in listening state instead of empty cursor when transcripts are disabled",bug,feature_request,https://github.com/microsoft/vscode/issues/328054
+330126,Integrated Browser shows up as available editor for remote file resources,bug,feature_request,https://github.com/microsoft/vscode/issues/330126
+328307,Inline terminal preview wraps output at fixed width instead of chat panel width,feature_request,bug,https://github.com/microsoft/vscode/issues/328307
+328049,Sometimes I can't cancel dictation,bug,feature_request,https://github.com/microsoft/vscode/issues/328049
+329350,"Mouse middle-click could mark a file as ""viewed""",feature_request,bug,https://github.com/microsoft/vscode/issues/329350
+327733,Combine browser element attachments into one item,feature_request,bug,https://github.com/microsoft/vscode/issues/327733
+327504,Save and Save As in Tab,feature_request,bug,https://github.com/microsoft/vscode/issues/327504
+328336,BYOK models in AgentHost sessions do not expose reasoning effort (thinking level) configuration,bug,feature_request,https://github.com/microsoft/vscode/issues/328336
+329988,no info when downloading dictation model,bug,feature_request,https://github.com/microsoft/vscode/issues/329988
+328794,If you only have 1 of the voice buttons active I don't think the border makes sense,bug,feature_request,https://github.com/microsoft/vscode/issues/328794
+327893,chat tips should show in the agents window above the chat input,feature_request,bug,https://github.com/microsoft/vscode/issues/327893

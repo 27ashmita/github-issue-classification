@@ -59,6 +59,32 @@ print(df.shape)
 
 
 # -----------------------------
+# Remove conflicting target labels
+# -----------------------------
+
+labels = df["all_labels"].fillna("").str.lower()
+
+conflicting_labels = (
+    labels.str.contains(
+        r"(?:^|,)bug(?:,|$)",
+        regex=True
+    )
+    & labels.str.contains(
+        r"(?:^|,)feature-request(?:,|$)",
+        regex=True
+    )
+)
+
+conflict_count = conflicting_labels.sum()
+
+print("\nIssues with both bug and feature-request labels:")
+print(conflict_count)
+
+df = df[
+    ~conflicting_labels
+].reset_index(drop=True)
+
+# -----------------------------
 # Check duplicates
 # -----------------------------
 
