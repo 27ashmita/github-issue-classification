@@ -1,13 +1,220 @@
-issue_number,title,label,predicted_label,url
-323335,Keep keyboard focus in the chat input when switching sessions,feature_request,bug,https://github.com/microsoft/vscode/issues/323335
-328054,"Show ""Listening..."" in listening state instead of empty cursor when transcripts are disabled",bug,feature_request,https://github.com/microsoft/vscode/issues/328054
-330126,Integrated Browser shows up as available editor for remote file resources,bug,feature_request,https://github.com/microsoft/vscode/issues/330126
-328307,Inline terminal preview wraps output at fixed width instead of chat panel width,feature_request,bug,https://github.com/microsoft/vscode/issues/328307
-328049,Sometimes I can't cancel dictation,bug,feature_request,https://github.com/microsoft/vscode/issues/328049
-329350,"Mouse middle-click could mark a file as ""viewed""",feature_request,bug,https://github.com/microsoft/vscode/issues/329350
-327733,Combine browser element attachments into one item,feature_request,bug,https://github.com/microsoft/vscode/issues/327733
-327504,Save and Save As in Tab,feature_request,bug,https://github.com/microsoft/vscode/issues/327504
-328336,BYOK models in AgentHost sessions do not expose reasoning effort (thinking level) configuration,bug,feature_request,https://github.com/microsoft/vscode/issues/328336
-329988,no info when downloading dictation model,bug,feature_request,https://github.com/microsoft/vscode/issues/329988
-328794,If you only have 1 of the voice buttons active I don't think the border makes sense,bug,feature_request,https://github.com/microsoft/vscode/issues/328794
-327893,chat tips should show in the agents window above the chat input,feature_request,bug,https://github.com/microsoft/vscode/issues/327893
+issue_number,title,description,clean_text,label,predicted_label,url
+323335,Keep keyboard focus in the chat input when switching sessions,"When switching to a session in the Agents window, keyboard focus should land in the **chat input** so you can start typing immediately — instead of landing in the editor or the Changes view.
+","Keep keyboard focus in the chat input when switching sessions When switching to a session in the Agents window, keyboard focus should land in the chat input so you can start typing immediately — instead of landing in the editor or the Changes view.",feature_request,bug,https://github.com/microsoft/vscode/issues/323335
+328054,"Show ""Listening..."" in listening state instead of empty cursor when transcripts are disabled",Just like when transcripts are disabled in voice mode,"Show ""Listening..."" in listening state instead of empty cursor when transcripts are disabled Just like when transcripts are disabled in voice mode",bug,feature_request,https://github.com/microsoft/vscode/issues/328054
+330126,Integrated Browser shows up as available editor for remote file resources,"1. Open a remote workspace
+2. Open an HTML file
+3. Notice the browser can be selected to display the file, but selecting it does nothing (as browser currently doesn't support remote file resources)
+   <img src=""https://github.com/user-attachments/assets/eefd473b-c399-47db-b819-c4ab829eff74"" alt=""Image"" width=""281"" height=""125"">
+
+","Integrated Browser shows up as available editor for remote file resources 1. Open a remote workspace 2. Open an HTML file 3. Notice the browser can be selected to display the file, but selecting it does nothing (as browser currently doesn't support remote file resources)",bug,feature_request,https://github.com/microsoft/vscode/issues/330126
+328307,Inline terminal preview wraps output at fixed width instead of chat panel width,"The inline terminal output preview in chat wraps content at a fixed column count (80 for restored sessions, or whatever the backing panel terminal happens to be for live ones) instead of the actual width of the output box. On a wide chat panel long lines wrap way too early and there is a dead gap before the chevron. Resizing the panel doesn't re-wrap the content either.
+
+The detached xterm mirror gets its cols once at creation in chatTerminalCommandMirror.ts and we never resize it after that.
+
+Way to verify:
+Run something like `python3 -c ""print('The quick brown fox jumps over the lazy dog. ' * 20)""` in agent mode and expand the output preview. The wrap point should match the box width, and dragging the sidebar wider/narrower should re-wrap the content live.","Inline terminal preview wraps output at fixed width instead of chat panel width The inline terminal output preview in chat wraps content at a fixed column count (80 for restored sessions, or whatever the backing panel terminal happens to be for live ones) instead of the actual width of the output box. On a wide chat panel long lines wrap way too early and there is a dead gap before the chevron. Resizing the panel doesn't re wrap the content either. The detached xterm mirror gets its cols once at creation in chatTerminalCommandMirror.ts and we never resize it after that. Way to verify: Run something like python3 c ""print('The quick brown fox jumps over the lazy dog. ' 20)"" in agent mode and expand the output preview. The wrap point should match the box width, and dragging the sidebar wider/narrower should re wrap the content live.",feature_request,bug,https://github.com/microsoft/vscode/issues/328307
+328049,Sometimes I can't cancel dictation,"Sometimes, dictation is stuck to on, but is not producing transcription. 
+
+Clicking does not stop it nor does the keybinding. It seems unresponsive. 
+
+Saw this in the console when it happened
+
+```
+ [chat-stt] language model transcript cleanup failed (source=incremental, reason=cancelled); using raw transcript Error: network request aborted
+```","Sometimes I can't cancel dictation Sometimes, dictation is stuck to on, but is not producing transcription. Clicking does not stop it nor does the keybinding. It seems unresponsive. Saw this in the console when it happened [chat stt] language model transcript cleanup failed (source=incremental, reason=cancelled); using raw transcript Error: network request aborted",bug,feature_request,https://github.com/microsoft/vscode/issues/328049
+329350,"Mouse middle-click could mark a file as ""viewed""","Since the file name is on far left and the viewed button is on far right, I struggle with going through file names and marking them ""viewed"" easily. It would be great if I could mark it as ""viewed"" by clicking mouse middle-click
+
+https://github.com/user-attachments/assets/1cbcb420-d4bd-4ccd-9370-bf4e470ce5a6
+
+Version: 1.133.0-insider (Universal)
+Commit: d90b90332515fe87d3ea344cbd4b0ae405128e9a
+Date: 2026-08-05T04:42:09Z
+Electron: 42.8.0
+ElectronBuildId: 14845705
+Chromium: 148.0.7778.280
+Node.js: 24.18.0
+V8: 14.8.178.38-electron.0
+@github/copilot: 1.0.78
+@github/copilot-sdk: 1.0.9-preview.3
+OS: d90b90332515fe87d3ea344cbd4b0ae405128e9a","Mouse middle click could mark a file as ""viewed"" Since the file name is on far left and the viewed button is on far right, I struggle with going through file names and marking them ""viewed"" easily. It would be great if I could mark it as ""viewed"" by clicking mouse middle click Version: 1.133.0 insider (Universal) Commit: d90b90332515fe87d3ea344cbd4b0ae405128e9a Date: 2026 08 05T04:42:09Z Electron: 42.8.0 ElectronBuildId: 14845705 Chromium: 148.0.7778.280 Node.js: 24.18.0 V8: 14.8.178.38 electron.0 @github/copilot: 1.0.78 @github/copilot sdk: 1.0.9 preview.3 OS: d90b90332515fe87d3ea344cbd4b0ae405128e9a",feature_request,bug,https://github.com/microsoft/vscode/issues/329350
+327733,Combine browser element attachments into one item,"It can get a bit cluttered when attaching several elements.
+
+ideally there would be one visible attachment per element, that includes both the text content and screenshot (if enabled).","Combine browser element attachments into one item It can get a bit cluttered when attaching several elements. ideally there would be one visible attachment per element, that includes both the text content and screenshot (if enabled).",feature_request,bug,https://github.com/microsoft/vscode/issues/327733
+327504,Save and Save As in Tab,"
+Type: <b>Feature Request</b>
+
+In an open tab, it would be nice to be able to right-click a tab and have ""Save"" and ""Save As"" available without having to open the Explorer pane. Although I am aware of the keyboard shortcut, having the option from the tab would be very helpful.
+
+<img width=""1035"" height=""709"" alt=""Image"" src=""https://github.com/user-attachments/assets/516473e7-ec30-4202-90cb-04e31224867d"" />
+
+
+VS Code version: Code 1.130.0 (1b6a188127eeaf9194f945eb6eb89a657e93c54c, 2026-07-22T14:55:04Z)
+OS version: Windows_NT x64 10.0.26200
+Modes:
+
+<details>
+<summary>System Info</summary>
+
+|Item|Value|
+|---|---|
+|CPUs|Intel(R) Xeon(R) W-11855M CPU @ 3.20GHz (12 x 3187)|
+|GPU Status|2d_canvas: enabled<br>GPU0: VENDOR= 0x10de, DEVICE=0x24b7 [NVIDIA RTX A4000 Laptop GPU], DRIVER_VENDOR=NVIDIA, DRIVER_VERSION=32.0.15.9672 *ACTIVE*<br>GPU1: VENDOR= 0x8086, DEVICE=0x9a70 [Intel(R) UHD Graphics], DRIVER_VERSION=32.0.101.7085<br>GPU2: VENDOR= 0x8086, DEVICE=0x9a70 [Intel(R) UHD Graphics], DRIVER_VERSION=32.0.101.7085<br>GPU3: VENDOR= 0x1414, DEVICE=0x008c [Microsoft Basic Render Driver], DRIVER_VERSION=10.0.26100.8875<br>Machine model name: <br>Machine model version: <br>direct_rendering_display_compositor: disabled_off_ok<br>gpu_compositing: enabled<br>multiple_raster_threads: enabled_on<br>opengl: enabled_on<br>rasterization: enabled<br>raw_draw: disabled_off_ok<br>skia_graphite: disabled_off<br>trees_in_viz: disabled_off<br>video_decode: enabled<br>video_encode: enabled<br>webgl: enabled<br>webgpu: enabled<br>webnn: disabled_off|
+|Load (avg)|undefined|
+|Memory (System)|127.20GB (104.06GB free)|
+|Process Argv|--crash-reporter-id 213aa5c6-d57e-4c74-9377-2d62ed85429c|
+|Screen Reader|yes|
+|VM|0%|
+</details><details><summary>Extensions (9)</summary>
+
+Name|Identifier|Author|Version
+---|---|---|---
+Dev Containers|ms-vscode-remote.remote-containers|ms-vscode-remote|0.466.0
+Remote - SSH|ms-vscode-remote.remote-ssh|ms-vscode-remote|0.124.0
+Remote - SSH: Editing Configuration Files|ms-vscode-remote.remote-ssh-edit|ms-vscode-remote|0.87.0
+WSL|ms-vscode-remote.remote-wsl|ms-vscode-remote|0.104.3
+Remote Development|ms-vscode-remote.vscode-remote-extensionpack|ms-vscode-remote|0.26.0
+Hex Editor|ms-vscode.hexeditor|ms-vscode|1.11.1
+PowerShell|ms-vscode.powershell|ms-vscode|2025.4.0
+Remote Explorer|ms-vscode.remote-explorer|ms-vscode|0.5.0
+Remote - Tunnels|ms-vscode.remote-server|ms-vscode|1.5.3
+
+</details><details>
+<summary>A/B Experiments</summary>
+
+```
+vsliv368cf:30146710
+vswsl492cf:30256860
+pythonvspyt551cf:31249601
+binariesv615:30325510
+nativeloc1:31344060
+dwcopilot:31170013
+dwoutputs:31242946
+copilot_t_ci:31333650
+e5gg6876:31282496
+pythonrdcb7:31342333
+6518g693:31463988
+aj953862:31281341
+envsactivate1:31551504
+cloudbuttont:31379625
+3efgi100_wstrepl:31403338
+ec5jj548:31422691
+cp_cls_t_966_ss:31526232
+4je02754:31466945
+8hhj4413:31478653
+cp_cls_t_1081:31454832
+conptydll_true:31498968
+e9c30283:31461165
+test_treatment2:31471001
+46204921:31447328
+control_6dc23131:31555649
+idci7584:31464702
+e3e4d672:31494082
+ei9d7968:31496641
+chat:31457767
+8hig5102:31480529
+89g7j272:31518289
+7e187181:31503455
+i2gc6536:31499202
+52612955:31516516
+githubstableflight:31469463
+ghj88844:31499326
+ddid_t:31478206
+hmra_i5g22:31518061
+7df3h592:31512476
+cp_cls_t_1082:31535311
+logging_enabled_new:31498466
+j0d79568:31499440
+jb_cp_cls_t_632:31543129
+56dj4588:31512888
+32d76977:31512328
+ha629193:31508444
+cdk-lw-on:31524445
+f9bf7985:31543584
+a1ije391_t:31540920
+41836166:31537719
+jbcp_cls_pctr_t:31531130
+61138546:31518536
+cp_intellij_t_nes:31548657
+d7b18187:31526828
+nes-curr-leftover-1500:31538366
+ahp-both-windows:31555645
+h561g132:31533256
+session_8:31532895
+ihg5j128:31534457
+f412h606:31551416
+7g2b5551:31542111
+max-result-100:31551154
+nes-ex-cf-euporie-03:31542868
+5fe6f778:31554331
+allow-none:31555437
+6i51c363:31551401
+nes-gb3-nf-6k:31554346
+1532g621_copy:31554320
+d4c76da2:31554780
+treatment-23-1:31555779
+unuse_dynamic_mcp:31555281
+
+```
+
+</details>
+
+<!-- generated by issue reporter -->","Save and Save As in Tab Type: Feature Request In an open tab, it would be nice to be able to right click a tab and have ""Save"" and ""Save As"" available without having to open the Explorer pane. Although I am aware of the keyboard shortcut, having the option from the tab would be very helpful. VS Code version: Code 1.130.0 (1b6a188127eeaf9194f945eb6eb89a657e93c54c, 2026 07 22T14:55:04Z) OS version: Windows NT x64 10.0.26200 Modes: System Info |Item|Value| | | | |CPUs|Intel(R) Xeon(R) W 11855M CPU @ 3.20GHz (12 x 3187)| |GPU Status|2d canvas: enabled GPU0: VENDOR= 0x10de, DEVICE=0x24b7 [NVIDIA RTX A4000 Laptop GPU], DRIVER VENDOR=NVIDIA, DRIVER VERSION=32.0.15.9672 ACTIVE GPU1: VENDOR= 0x8086, DEVICE=0x9a70 [Intel(R) UHD Graphics], DRIVER VERSION=32.0.101.7085 GPU2: VENDOR= 0x8086, DEVICE=0x9a70 [Intel(R) UHD Graphics], DRIVER VERSION=32.0.101.7085 GPU3: VENDOR= 0x1414, DEVICE=0x008c [Microsoft Basic Render Driver], DRIVER VERSION=10.0.26100.8875 Machine model name: Machine model version: direct rendering display compositor: disabled off ok gpu compositing: enabled multiple raster threads: enabled on opengl: enabled on rasterization: enabled raw draw: disabled off ok skia graphite: disabled off trees in viz: disabled off video decode: enabled video encode: enabled webgl: enabled webgpu: enabled webnn: disabled off| |Load (avg)|undefined| |Memory (System)|127.20GB (104.06GB free)| |Process Argv| crash reporter id 213aa5c6 d57e 4c74 9377 2d62ed85429c| |Screen Reader|yes| |VM|0%| Extensions (9) Name|Identifier|Author|Version | | | Dev Containers|ms vscode remote.remote containers|ms vscode remote|0.466.0 Remote SSH|ms vscode remote.remote ssh|ms vscode remote|0.124.0 Remote SSH: Editing Configuration Files|ms vscode remote.remote ssh edit|ms vscode remote|0.87.0 WSL|ms vscode remote.remote wsl|ms vscode remote|0.104.3 Remote Development|ms vscode remote.vscode remote extensionpack|ms vscode remote|0.26.0 Hex Editor|ms vscode.hexeditor|ms vscode|1.11.1 PowerShell|ms vscode.powershell|ms vscode|2025.4.0 Remote Explorer|ms vscode.remote explorer|ms vscode|0.5.0 Remote Tunnels|ms vscode.remote server|ms vscode|1.5.3 A/B Experiments vsliv368cf:30146710 vswsl492cf:30256860 pythonvspyt551cf:31249601 binariesv615:30325510 nativeloc1:31344060 dwcopilot:31170013 dwoutputs:31242946 copilot t ci:31333650 e5gg6876:31282496 pythonrdcb7:31342333 6518g693:31463988 aj953862:31281341 envsactivate1:31551504 cloudbuttont:31379625 3efgi100 wstrepl:31403338 ec5jj548:31422691 cp cls t 966 ss:31526232 4je02754:31466945 8hhj4413:31478653 cp cls t 1081:31454832 conptydll true:31498968 e9c30283:31461165 test treatment2:31471001 46204921:31447328 control 6dc23131:31555649 idci7584:31464702 e3e4d672:31494082 ei9d7968:31496641 chat:31457767 8hig5102:31480529 89g7j272:31518289 7e187181:31503455 i2gc6536:31499202 52612955:31516516 githubstableflight:31469463 ghj88844:31499326 ddid t:31478206 hmra i5g22:31518061 7df3h592:31512476 cp cls t 1082:31535311 logging enabled new:31498466 j0d79568:31499440 jb cp cls t 632:31543129 56dj4588:31512888 32d76977:31512328 ha629193:31508444 cdk lw on:31524445 f9bf7985:31543584 a1ije391 t:31540920 41836166:31537719 jbcp cls pctr t:31531130 61138546:31518536 cp intellij t nes:31548657 d7b18187:31526828 nes curr leftover 1500:31538366 ahp both windows:31555645 h561g132:31533256 session 8:31532895 ihg5j128:31534457 f412h606:31551416 7g2b5551:31542111 max result 100:31551154 nes ex cf euporie 03:31542868 5fe6f778:31554331 allow none:31555437 6i51c363:31551401 nes gb3 nf 6k:31554346 1532g621 copy:31554320 d4c76da2:31554780 treatment 23 1:31555779 unuse dynamic mcp:31555281",feature_request,bug,https://github.com/microsoft/vscode/issues/327504
+328336,BYOK models in AgentHost sessions do not expose reasoning effort (thinking level) configuration,"<!-- ⚠️⚠️ Do Not Delete This! bug_report_template ⚠️⚠️ -->
+<!-- Please read our Rules of Conduct: https://opensource.microsoft.com/codeofconduct/ -->
+<!-- 🕮 Read our guide about submitting issues: https://github.com/microsoft/vscode/wiki/Submitting-Bugs-and-Suggestions -->
+<!-- 🔎 Search existing issues to avoid creating duplicates. -->
+<!-- 🧪 Test using the latest Insiders build to see if your issue has already been fixed: https://code.visualstudio.com/insiders/ -->
+<!-- 💡 Instead of creating a report here, use 'Report Issue' from the 'Help' menu in VS Code to pre-fill useful information. -->
+<!-- 🔧 Launch with `code --disable-extensions` to check. -->
+Does this issue occur when all extensions are disabled?: Yes
+
+<!-- 🪓 If you answered No above, use 'Help: Start Extension Bisect' from Command Palette to try to identify the cause. -->
+<!-- 📣 Issues caused by an extension need to be reported directly to the extension publisher. The 'Help > Report Issue' dialog can assist with this. -->
+- VS Code Version: 1.131.0
+- OS Version: macOS
+
+Steps to Reproduce:
+
+1. Configure a BYOK model that supports reasoning effort (e.g. Anthropic Claude or OpenAI o-series) via the Copilot extension's BYOK settings
+2. Enable `chat.agentHost.byokModels.enabled` in settings and restart the Agent Host process
+3. Open an AgentHost Copilot session, open the model picker, and select the BYOK model
+4. Observe: the thinking effort / reasoning effort configuration option is missing
+
+**Expected:** The BYOK model in the AgentHost picker should expose the same reasoning effort configuration (e.g. Low / Medium / High) that is available in the regular Copilot Chat model picker.
+
+**Actual:** The BYOK model shows in the picker but has no thinking effort selector. The same model shows the reasoning effort option correctly in the regular (non-AgentHost) Copilot Chat model picker.
+
+## Root Cause
+
+The BYOK bridge DTO (`IByokLmModelInfo`) between the renderer and the Agent Host process has never carried reasoning effort information. This is a gap in the bridge design, not a regression — the `configSchema` was simply never included when the model metadata DTO was incrementally built up.
+
+**Data flow comparison:**
+
+| Path | `configSchema` | Reasoning Effort |
+|------|---------------|-----------------|
+| CAPI models → `_listModels()` | ✅ `_createModelConfigSchema()` synthesizes `thinkingLevel` | ✅ |
+| BYOK models → `_refreshByokModels()` | ❌ not set | ❌ |
+
+The renderer-side `AgentHostByokLmHandler.listModels()` has access to `metadata.configurationSchema` (which includes `reasoningEffort` set by the Copilot extension's `byokModelInfo.ts`) but does not read or forward it. Consequently, `CopilotAgent._refreshByokModels()` cannot synthesize a `configSchema` for BYOK models, and `AgentHostLanguageModelProvider` receives `configSchema: undefined`.
+
+## Proposed Fix
+
+Three surgical changes thread reasoning effort through the bridge:
+
+**1. `src/vs/platform/agentHost/common/agentHostByokLm.ts`** — add fields to `IByokLmModelInfo`:
+```typescript
+readonly supportsReasoningEffort?: readonly string[];","BYOK models in AgentHost sessions do not expose reasoning effort (thinking level) configuration Does this issue occur when all extensions are disabled?: Yes Report Issue' dialog can assist with this. VS Code Version: 1.131.0 OS Version: macOS Steps to Reproduce: 1. Configure a BYOK model that supports reasoning effort (e.g. Anthropic Claude or OpenAI o series) via the Copilot extension's BYOK settings 2. Enable chat.agentHost.byokModels.enabled in settings and restart the Agent Host process 3. Open an AgentHost Copilot session, open the model picker, and select the BYOK model 4. Observe: the thinking effort / reasoning effort configuration option is missing Expected: The BYOK model in the AgentHost picker should expose the same reasoning effort configuration (e.g. Low / Medium / High) that is available in the regular Copilot Chat model picker. Actual: The BYOK model shows in the picker but has no thinking effort selector. The same model shows the reasoning effort option correctly in the regular (non AgentHost) Copilot Chat model picker. Root Cause The BYOK bridge DTO ( IByokLmModelInfo ) between the renderer and the Agent Host process has never carried reasoning effort information. This is a gap in the bridge design, not a regression — the configSchema was simply never included when the model metadata DTO was incrementally built up. Data flow comparison: | Path | configSchema | Reasoning Effort | | | | | | CAPI models → listModels() | ✅ createModelConfigSchema() synthesizes thinkingLevel | ✅ | | BYOK models → refreshByokModels() | ❌ not set | ❌ | The renderer side AgentHostByokLmHandler.listModels() has access to metadata.configurationSchema (which includes reasoningEffort set by the Copilot extension's byokModelInfo.ts ) but does not read or forward it. Consequently, CopilotAgent. refreshByokModels() cannot synthesize a configSchema for BYOK models, and AgentHostLanguageModelProvider receives configSchema: undefined . Proposed Fix Three surgical changes thread reasoning effort through the bridge: 1. src/vs/platform/agentHost/common/agentHostByokLm.ts — add fields to IByokLmModelInfo : typescript readonly supportsReasoningEffort?: readonly string[];",bug,feature_request,https://github.com/microsoft/vscode/issues/328336
+329988,no info when downloading dictation model,"![Image](https://github.com/user-attachments/assets/fd296b60-a6d2-4d87-b5ca-5cae3c6de583)
+
+",no info when downloading dictation model ![Image](,bug,feature_request,https://github.com/microsoft/vscode/issues/329988
+328794,If you only have 1 of the voice buttons active I don't think the border makes sense,"Testing #328440
+
+<img width=""112"" height=""86"" alt=""Image"" src=""https://github.com/user-attachments/assets/bb6acada-aadb-4d4f-acdf-0cb19c7c67a5"" />
+
+this gray border. It's not like all our other buttons which are borderless. It should be like one of these:
+
+<img width=""199"" height=""98"" alt=""Image"" src=""https://github.com/user-attachments/assets/1bdd9125-9c3b-4584-84f3-8f16c8a513be"" />
+
+",If you only have 1 of the voice buttons active I don't think the border makes sense Testing 328440 this gray border. It's not like all our other buttons which are borderless. It should be like one of these:,bug,feature_request,https://github.com/microsoft/vscode/issues/328794
+327893,chat tips should show in the agents window above the chat input,"They did at one point, but are no longer there","chat tips should show in the agents window above the chat input They did at one point, but are no longer there",feature_request,bug,https://github.com/microsoft/vscode/issues/327893

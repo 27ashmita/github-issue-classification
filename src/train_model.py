@@ -298,6 +298,8 @@ misclassified[
     [
         "issue_number",
         "title",
+        "description",
+        "clean_text",
         "label",
         "predicted_label",
         "url"
