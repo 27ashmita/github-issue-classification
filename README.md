@@ -1,169 +1,249 @@
 # GitHub Issue Classification
 
-This project is part of a prospective MSc research assessment.
+This project was developed as part of a prospective MSc research assessment.
+
+The study investigates whether a simple machine learning approach can distinguish **bug reports** from **feature requests** using the textual content of GitHub issues.
 
 ## Research Question
 
-How accurately can a simple machine learning model distinguish bug reports
-from feature requests using the text of GitHub issues?
+**How accurately can a simple machine learning model distinguish bug reports from feature requests using the text of GitHub issues?**
 
 ## Selected Project
 
-- GitHub repository: `microsoft/vscode`
-- Project category: Developer tool
-- Target labels:
-  - `bug`
-  - `feature-request`
+The issues used in this study were collected from the Microsoft Visual Studio Code (VS Code) GitHub repository.
+
+* GitHub repository: `microsoft/vscode`
+* Project category: Developer tool
+* Target labels:
+
+  * `bug`
+  * `feature-request`
 
 ## Dataset
 
-Closed GitHub issues were collected from the Microsoft Visual Studio Code
-(VS Code) repository using the GitHub REST API.
+Closed GitHub issues were collected using the GitHub REST API.
 
 The initial dataset contained:
 
-- 100 bug issues
-- 100 feature-request issues
-- 200 issues in total
+* 100 bug issues
+* 100 feature-request issues
+* 200 issues in total
 
 For each issue, the following information was collected:
 
-- Issue number
-- Issue title
-- Issue description
-- Target label
-- All GitHub labels
-- Creation date
-- Closing date
-- Issue URL
+* Issue number
+* Issue title
+* Issue description
+* Target label
+* All GitHub labels
+* Creation date
+* Closing date
+* Issue URL
 
-Pull requests returned by the GitHub Issues API were excluded.
+The GitHub Issues API can also return pull requests. Since this study focuses only on GitHub issues, records containing the `pull_request` field were excluded during data collection.
 
-During label-quality checking, one issue was found to contain both
-`bug` and `feature-request` labels. This issue was removed because its
-target class was ambiguous.
+### Label Quality Check
 
-The final processed dataset contains:
+GitHub issues can contain multiple labels. Therefore, all labels associated with each collected issue were stored in the `all_labels` field.
 
-- 100 bug issues
-- 99 feature-request issues
-- 199 issues in total
+Additional labels such as component or release-related labels were preserved but were not used as classification targets.
+
+A specific check was performed to identify issues containing both target labels:
+
+* `bug`
+* `feature-request`
+
+One issue contained both target labels. This issue was removed because its target class was ambiguous for a binary classification task.
+
+The final processed dataset therefore contains:
+
+* 100 bug issues
+* 99 feature-request issues
+* **199 issues in total**
+
+The final dataset is nearly balanced between the two target classes.
 
 ## Data Preparation
 
-The issue title and description were combined into one text field.
+The issue title and description were combined into a single text field for classification.
 
 The preprocessing procedure included:
 
-- Checking and removing duplicate issue numbers
-- Replacing missing descriptions with empty text
-- Checking issues with multiple GitHub labels
-- Removing the issue containing both target labels
-- Removing URLs
-- Removing HTML tags
-- Removing selected Markdown symbols
-- Removing unnecessary whitespace
-- Checking for empty text after cleaning
+* Checking for duplicate issue numbers
+* Removing duplicate issues if present
+* Checking for missing descriptions
+* Replacing missing descriptions with empty text
+* Checking issues with multiple GitHub labels
+* Removing the issue containing both target labels
+* Combining the title and description
+* Removing URLs
+* Removing HTML tags
+* Removing selected Markdown symbols
+* Removing repeated whitespace
+* Removing unnecessary spaces at the beginning and end of text
+* Checking for empty text after cleaning
 
-Five issues had missing descriptions. Their titles were retained so that
-the issues could still be used.
+Five issues had missing descriptions. These issues were retained because their titles still contained usable textual information.
 
 No duplicate issue numbers were found.
 
+After preprocessing, no issue had an empty cleaned text field.
+
 ## Exploratory Data Analysis
 
-The final dataset contains 199 issues.
+Exploratory data analysis was performed on the processed dataset before model development.
 
-Average issue length:
+### Dataset Distribution
 
-- Overall: 140.61 words
-- Bug: 154.44 words
-- Feature request: 126.64 words
+* Total issues: 199
+* Bug reports: 100
+* Feature requests: 99
 
-The longest issue contained 1,046 words and the shortest contained 2 words.
+### Issue Length
 
-EDA outputs are stored in the `results/` directory.
+The average issue length was:
+
+* Overall: **140.61 words**
+* Bug reports: **154.44 words**
+* Feature requests: **126.64 words**
+
+The longest issue contained **1,046 words**.
+
+The shortest issue contained **2 words**.
+
+The EDA script generates:
+
+* `class_distribution.png`
+* `text_length_distribution.png`
+* `eda_summary.txt`
+
+These outputs are stored in the `results/` directory.
 
 ## Machine Learning Method
 
-The processed dataset was divided using an 80/20 stratified train-test split
-with `random_state=42`.
+A clearly separated training and testing approach was used.
 
-This produced:
+The processed dataset was divided using an **80/20 stratified train-test split** with `random_state=42`.
 
-- 159 training issues
-- 40 testing issues
+Stratification was used to maintain a similar class distribution in the training and testing datasets.
 
-Training distribution:
+### Training Set
 
-- 80 bugs
-- 79 feature requests
+* Total: 159 issues
+* Bug: 80
+* Feature request: 79
 
-Testing distribution:
+### Test Set
 
-- 20 bugs
-- 20 feature requests
+* Total: 40 issues
+* Bug: 20
+* Feature request: 20
 
-### TF-IDF
+The test set was kept separate from model training and was used for final evaluation.
 
-TF-IDF was used to convert the cleaned issue text into numerical features.
+## TF-IDF Feature Extraction
 
-The TF-IDF vectorizer was fitted only on the training data and then used
-to transform the test data.
+TF-IDF was used to convert the cleaned GitHub issue text into numerical features that could be used by the machine learning classifier.
 
-The final training representation contained 3,649 TF-IDF features.
+English stop words were removed during TF-IDF processing.
+
+The TF-IDF vectorizer was fitted **only on the training data**. The fitted vectorizer was then used to transform the test data.
+
+This prevents the test data from influencing the vocabulary learned during training.
+
+The resulting TF-IDF representations were:
+
+* Training TF-IDF shape: `(159, 3649)`
+* Testing TF-IDF shape: `(40, 3649)`
+* Number of TF-IDF features: **3,649**
 
 ## Models
 
-Two models were evaluated.
+Two classification approaches were evaluated.
 
 ### Baseline 1: Majority-Class Classifier
 
-The majority-class classifier always predicts the most frequent class in
-the training dataset.
+A majority-class classifier was used as the simplest baseline.
 
-Accuracy:
+The classifier predicts the most frequent class in the training dataset for every test example.
 
-`0.50`
+The training dataset contained:
+
+* 80 bugs
+* 79 feature requests
+
+Therefore, `bug` was the majority class.
+
+The majority-class baseline achieved:
+
+* **Accuracy: 0.50**
 
 ### Baseline 2: TF-IDF + Logistic Regression
 
-Logistic Regression was trained using the TF-IDF features.
+The second approach used TF-IDF text features with a Logistic Regression classifier.
 
-Results:
+Logistic Regression was selected because it is a standard linear classification algorithm that can work effectively with high-dimensional sparse text representations such as TF-IDF.
 
-- Accuracy: 0.70
-- Precision: 0.70
-- Recall: 0.70
-- F1-score: 0.70
+The model was configured with:
 
-Per-class results:
+* `max_iter=1000`
+* `random_state=42`
 
-| Class | Precision | Recall | F1-score |
-|---|---:|---:|---:|
-| Bug | 0.70 | 0.70 | 0.70 |
-| Feature Request | 0.70 | 0.70 | 0.70 |
+## Model Evaluation
 
-Confusion matrix:
+The Logistic Regression classifier achieved:
 
-    [[14, 6],
-     [6, 14]]
+* **Accuracy: 0.70**
+* **Macro Precision: 0.70**
+* **Macro Recall: 0.70**
+* **Macro F1-score: 0.70**
 
-The Logistic Regression model correctly classified 28 of the 40 test
-issues and incorrectly classified 12.
+### Per-Class Performance
+
+| Class           | Precision | Recall | F1-score | Support |
+| --------------- | --------: | -----: | -------: | ------: |
+| Bug             |      0.70 |   0.70 |     0.70 |      20 |
+| Feature Request |      0.70 |   0.70 |     0.70 |      20 |
+
+The model showed the same precision, recall, and F1-score for both classes on this test set.
+
+### Confusion Matrix
+
+```text
+[[14, 6],
+ [ 6, 14]]
+```
+
+This means:
+
+* 14 bug reports were correctly classified as bugs.
+* 6 bug reports were incorrectly classified as feature requests.
+* 14 feature requests were correctly classified as feature requests.
+* 6 feature requests were incorrectly classified as bugs.
+
+Overall, the classifier correctly classified **28 of the 40 test issues** and incorrectly classified **12**.
+
+The Logistic Regression classifier improved accuracy from **50% to 70%**, an absolute improvement of **20 percentage points** compared with the majority-class baseline.
 
 ## Error Analysis
 
-All 12 incorrectly classified test issues were manually examined.
+All **12 incorrectly classified test issues** were manually examined.
 
-The analysis identified several possible reasons for classification errors:
+The error analysis identified several possible reasons for incorrect predictions:
 
-- Similar language between bugs and feature requests
-- Short or incomplete descriptions
-- Important information contained in screenshots
-- Ambiguous GitHub labels
-- GitHub issue-template and formatting noise
-- Small training dataset
+* Similar language between bugs and feature requests
+* Ambiguous issue descriptions
+* Short or incomplete descriptions
+* Important information contained mainly in screenshots
+* Potential ambiguity or inconsistency in GitHub labels
+* GitHub issue-template and formatting noise
+* Limited training data
+
+Some feature requests described problems with existing software behavior and therefore appeared similar to bug reports.
+
+Similarly, some bug reports used words such as *should*, *show*, or other language that could also appear in feature requests.
+
+Some issues contained very little textual information, while others relied heavily on screenshots. Since the classifier uses only text, information contained in images was unavailable to the model.
 
 The incorrectly classified issues are stored in:
 
@@ -171,118 +251,244 @@ The incorrectly classified issues are stored in:
 
 ## Project Structure
 
-    github-issue-classification/
-    ├── data/
-    │   ├── raw/
-    │   │   └── vscode_closed_issues.csv
-    │   └── processed/
-    │       └── vscode_processed_issues.csv
-    ├── results/
-    │   ├── class_distribution.png
-    │   ├── text_length_distribution.png
-    │   ├── confusion_matrix.png
-    │   ├── misclassified_issues.csv
-    │   ├── model_metrics.txt
-    │   └── eda_summary.txt
-    ├── src/
-    │   ├── collect_issues.py
-    │   ├── clean_data.py
-    │   ├── eda.py
-    │   └── train_model.py
-    ├── report/
-    ├── slides/
-    └── README.md
+```text
+github-issue-classification/
+├── data/
+│   ├── raw/
+│   │   └── vscode_closed_issues.csv
+│   └── processed/
+│       └── vscode_processed_issues.csv
+│
+├── results/
+│   ├── class_distribution.png
+│   ├── text_length_distribution.png
+│   ├── confusion_matrix.png
+│   ├── misclassified_issues.csv
+│   ├── model_metrics.txt
+│   └── eda_summary.txt
+│
+├── src/
+│   ├── collect_issues.py
+│   ├── clean_data.py
+│   ├── eda.py
+│   └── train_model.py
+│
+└── README.md
+```
 
 ## Requirements
 
 The project was developed using Python 3.
 
-Main Python libraries:
+The main Python libraries are:
 
-- pandas
-- requests
-- scikit-learn
-- matplotlib
+* `pandas`
+* `requests`
+* `scikit-learn`
+* `matplotlib`
 
 Install the required libraries using:
 
-    pip install pandas requests scikit-learn matplotlib
+```bash
+pip install pandas requests scikit-learn matplotlib
+```
+
+A Python virtual environment is recommended.
+
+For example:
+
+```bash
+python -m venv .venv
+```
+
+On macOS/Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+Then install the required libraries:
+
+```bash
+pip install pandas requests scikit-learn matplotlib
+```
 
 ## Reproducing the Experiment
 
-Run the following commands from the project root directory.
+## Reproducing the Reported Results
 
-### 1. Collect GitHub issues
+The exact dataset used for the reported experiment is included in:
 
-    python src/collect_issues.py
+`data/raw/vscode_closed_issues.csv`
 
-This creates:
+To reproduce the reported preprocessing, analysis, and model results,
+run the following commands from the project root:
 
-    data/raw/vscode_closed_issues.csv
+```bash
+python src/clean_data.py
+python src/eda.py
+python src/train_model.py
 
-### 2. Clean and prepare the dataset
+Run the following commands from the **root directory of the project**.
 
-    python src/clean_data.py
+### Step 1: Collect GitHub Issues
 
-This creates:
+```bash
+python src/collect_issues.py
+```
 
-    data/processed/vscode_processed_issues.csv
+This script:
 
-### 3. Run exploratory data analysis
+* Connects to the GitHub REST API
+* Collects closed bug issues
+* Collects closed feature-request issues
+* Excludes pull requests
+* Stores the relevant issue information
+* Preserves all GitHub labels
 
-    python src/eda.py
+The raw dataset is saved to:
 
-This generates the EDA results and figures in:
+```text
+data/raw/vscode_closed_issues.csv
+```
 
-    results/
+### Step 2: Clean and Prepare the Dataset
 
-### 4. Train and evaluate the classifier
+```bash
+python src/clean_data.py
+```
 
-    python src/train_model.py
+This script:
 
-This trains the majority baseline and Logistic Regression classifier and
-generates the evaluation results, confusion matrix, and misclassified
-issues.
+* Checks conflicting target labels
+* Removes the issue containing both target labels
+* Checks and removes duplicate issue numbers
+* Handles missing descriptions
+* Combines titles and descriptions
+* Cleans the text
+* Checks for empty text after cleaning
+
+The processed dataset is saved to:
+
+```text
+data/processed/vscode_processed_issues.csv
+```
+
+### Step 3: Run Exploratory Data Analysis
+
+```bash
+python src/eda.py
+```
+
+This script examines:
+
+* Dataset size
+* Class distribution
+* Issue text length
+* Average issue length
+* Average issue length by class
+
+It generates the EDA figures and summary in:
+
+```text
+results/
+```
+
+### Step 4: Train and Evaluate the Models
+
+```bash
+python src/train_model.py
+```
+
+This script:
+
+* Creates the stratified train-test split
+* Fits TF-IDF on the training data
+* Transforms the test data
+* Evaluates the majority-class baseline
+* Trains Logistic Regression
+* Calculates accuracy
+* Calculates precision
+* Calculates recall
+* Calculates F1-score
+* Generates the confusion matrix
+* Identifies incorrectly classified issues
+* Saves the evaluation results
+
+The main model outputs are:
+
+```text
+results/model_metrics.txt
+results/confusion_matrix.png
+results/misclassified_issues.csv
+```
+
+## Main Findings
+
+The majority-class baseline achieved **50% accuracy**.
+
+The TF-IDF with Logistic Regression classifier achieved **70% accuracy**.
+
+Both bug reports and feature requests achieved:
+
+* Precision: 0.70
+* Recall: 0.70
+* F1-score: 0.70
+
+The results suggest that GitHub issue text contains useful information for distinguishing bug reports from feature requests.
+
+However, the dataset and test set are small. Therefore, the results should be interpreted as preliminary evidence rather than a strong general conclusion about GitHub issue classification.
 
 ## Limitations
 
 This is a small empirical study using issues from only one GitHub repository.
 
-The final dataset contains 199 issues, so the results should not be used
-to make strong general conclusions.
+Important limitations include:
 
-GitHub labels may also contain ambiguity or inconsistency.
+* The final dataset contains only 199 issues.
+* Only the VS Code repository was studied.
+* The test set contains only 40 issues.
+* GitHub labels may contain ambiguity or inconsistency.
+* Some issues contain very little textual information.
+* Some issues rely on screenshots or other non-text information.
+* The classifier cannot interpret information contained in images.
+* Basic preprocessing may leave some GitHub template or technical boilerplate.
+* Only one standard text classifier was evaluated in addition to the majority-class baseline.
+* A single train-test split was used instead of cross-validation.
 
-Future work could include:
+Future work could investigate:
 
-- A larger dataset
-- Multiple GitHub repositories
-- Improved preprocessing
-- Word and character n-grams
-- Cross-validation
-- Additional machine learning classifiers
-- Contextual language models
-- Cross-project evaluation
+* Larger datasets
+* Multiple GitHub repositories
+* Improved removal of templates and boilerplate
+* Word and character n-grams
+* Five-fold cross-validation
+* Additional machine learning classifiers
+* Contextual language models
+* Cross-project evaluation
+* Temporal evaluation
+* More systematic validation of GitHub labels
 
-## AI Disclosure
+## Generative AI Disclosure
 
-Generative AI (ChatGPT) was used as a supporting tool during the project.
+Generative AI was used as a supporting tool during this assessment.
 
-It was used for:
-
-- Explaining Python code and machine learning concepts
-- Discussing data preparation decisions
-- Explaining TF-IDF and Logistic Regression
-- Interpreting evaluation metrics
-- Supporting manual error analysis
-- Assisting with the organization and wording of documentation and the report
-
-The code was executed by the author, and the datasets, model outputs,
-evaluation results, and generated explanations were reviewed and verified
-before submission.
+A detailed disclosure of the AI tool used, the tasks for which it was used, the main prompts submitted, and the components personally reviewed or modified is provided in the research report appendix.
 
 ## Status
 
-The empirical study, model evaluation, and error analysis are complete.
+The following parts of the empirical study have been completed:
 
-Final report preparation and presentation preparation are in progress.
+* Data collection
+* Label-quality checking
+* Data preparation
+* Exploratory data analysis
+* Train-test split
+* TF-IDF feature extraction
+* Majority-class baseline
+* Logistic Regression classifier
+* Model evaluation
+* Confusion matrix
+* Manual error analysis
+
+The research report and presentation are being finalized.
